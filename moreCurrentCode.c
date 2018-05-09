@@ -50,17 +50,45 @@ void rightDriveMotors(int speed) {
   motor[backRightMotor]  = speed;
 }
 
+void makeTurn(int Lspeed, int Rspeed) {
+	rightDriveMotors(Rspeed);
+	leftDriveMotors(Lspeed);
+}
+
+void getAndShoot(int chargeTime) {
+	motor[ShooterMotors] = 127;
+	motor[intakeMotor] = 127;
+	motor[treadMotor] = 127;
+	wait1Msec(chargeTime);
+	motor[innerWheelMotor] = 127;
+}
+
+void toggle (string Btn, int nBtn, string motorName) {
+	if (vexRT[Btn] == 1) {
+  	nBtn += 1;
+	    if (nBtn % 2 == 0) {
+	    	motor[motorName] = 0;
+	  	}else{
+	  		motor[motorName] = 127;
+	  	}
+	  	wait1Msec(200);
+  	}
+}
+
+
 int nBtn6U;
 int nBtn6D;
 int nBtn8U;
 int nBtn7U;
 int nBtn8R;
 int nBtn7L;
+int nBtn8D;
 
 //intake - 6U 6D
 //innerWheel - 7U
 //tread - 7L
 //shooter - 8U full 8r half
+//intake&tread&upperShooter - 8D
 
 task main()
 {
@@ -139,6 +167,21 @@ task main()
 	  	}
 	  	wait1Msec(200);
   	}
+
+//intake and shoot
+  	if (vexRT[Btn8D] == 1) {
+  		nBtn8D += 1;
+  		if (nBtn8D % 2 == 0) {
+  			motor[ShooterMotors] = 0;
+				motor[intakeMotor] = 0;
+				motor[treadMotor] = 0;
+				motor[innerWheelMotor] = 0;
+			}else{
+				getAndShoot(500);
+			}
+			wait1Msec(200);
+		}
+
 
 //scoot scoot left
   	if (vexRT[Btn7L] == 1) {
