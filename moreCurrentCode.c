@@ -75,7 +75,7 @@ task main()
     //Intake is controlled by top bumpers
 
 //intake backwards
-    if(vexRT[Btn6U] == 1) {
+    if (vexRT[Btn6U] == 1) {
     	nBtn6U += 1;
 	    if (nBtn6U % 2 == 0) {
 	    	motor[intakeMotor] = 0;
