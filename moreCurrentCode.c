@@ -48,11 +48,13 @@ int nBtn8U;
 int nBtn7U;
 int nBtn8R;
 int nBtn7L;
+int	nBtn8D;
 
 //intake - 6U 6D
 //innerWheel - 7U
 //tread - 7L
 //shooter - 8U full 8r half
+//intake all - 8D
 
 task main()
 {
@@ -82,6 +84,21 @@ task main()
 	    	motor[intakeMotor] = 0;
 	  	}else{
 	  		motor[intakeMotor] = 127;
+	  	}
+	  	wait1Msec(200);
+  	}
+
+ //intake and shoot
+  	if(vexRT[Btn8D] == 1) {
+   	nBtn8D += 1;
+	    if (nBtn8D % 2 == 0) {
+	    	motor[intakeMotor] = 0;
+	  	}else{
+	  		runShooter(127);
+	  		motor[intakeMotor] = 127;
+	  		motor[treadMotor] = 127;
+	  		wait1Msec(500);
+	  		motor[innerWheelMotor] = 127;
 	  	}
 	  	wait1Msec(200);
   	}
