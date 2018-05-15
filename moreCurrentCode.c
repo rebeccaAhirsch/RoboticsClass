@@ -1,5 +1,5 @@
 #pragma config(Motor,  port1,           intakeMotor,   tmotorVex393_HBridge, openLoop)
-#pragma config(Motor,  port2,           rightShooterMotors, tmotorVex393_MC29, openLoop, reversed)
+#pragma config(Motor,  port2,           rightShooterMotors, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           leftShooterMotors, tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port4,           treadMotor,    tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port5,           treadMotor,    tmotorVex393_MC29, openLoop)
@@ -41,6 +41,20 @@ void runShooter( int speed) {
 	motor[leftShooterMotors] = speed;
 	motor[rightShooterMotors] = speed;
 }
+void intakeAndShoot(int speed) {
+	runShooter(speed);
+	motor[intakeMotor] = speed;
+	motor[treadMotor] = speed;
+	wait1Msec(500);
+	motor[innerWheelMotor] = speed;
+}
+void turnAllOff() {
+	motor[intakeMotor] = 0;
+	runDriveMotors(0,0);
+	runShooter(0);
+	motor[treadMotor] = 0;
+	motor[innerWheelMotor] = 0;
+}
 
 int nBtn6U;
 int nBtn6D;
@@ -66,6 +80,14 @@ task main()
     motor[rightDriveMotors] = vexRT[Ch2];
     //Intake is controlled by top bumpers
 
+
+
+    //run auto
+    if ((vexRT[Btn6U] == 1) && (vexRT[Btn6D] == 1) && (vexRT[Btn5U] == 1) && (vexRT[Btn5D] == 1)) {
+    		turnAllOff();
+    		intakeAndShoot(127);
+    		T1 = timer1
+  	}
 //intake backwards
     if (vexRT[Btn6U] == 1) {
     	nBtn6U += 1;
@@ -92,13 +114,9 @@ task main()
   	if(vexRT[Btn8D] == 1) {
    	nBtn8D += 1;
 	    if (nBtn8D % 2 == 0) {
-	    	motor[intakeMotor] = 0;
+	    	intakeAndShoot(0);
 	  	}else{
-	  		runShooter(127);
-	  		motor[intakeMotor] = 127;
-	  		motor[treadMotor] = 127;
-	  		wait1Msec(500);
-	  		motor[innerWheelMotor] = 127;
+	  		intakeAndShoot(127);
 	  	}
 	  	wait1Msec(200);
   	}
