@@ -45,8 +45,6 @@ void intakeAndShoot(int speed) {
 	runShooter(speed);
 	motor[intakeMotor] = speed;
 	motor[treadMotor] = speed;
-	wait1Msec(500);
-	motor[innerWheelMotor] = speed;
 }
 void turnAllOff() {
 	motor[intakeMotor] = 0;
@@ -86,7 +84,28 @@ task main()
     if ((vexRT[Btn6U] == 1) && (vexRT[Btn6D] == 1) && (vexRT[Btn5U] == 1) && (vexRT[Btn5D] == 1)) {
     		turnAllOff();
     		intakeAndShoot(127);
-    		T1 = timer1
+    		wait1Msec(500);
+    		motor[innerWheelMotor] = 127;
+    		wait1Msec(10000);
+    		turnAllOff();
+    		runDriveMotors(-127, -100);
+ 				wait1Msec(1000);
+ 				runDriveMotors(0,0);
+ 				runDriveMotors(20,-127);
+ 				wait1Msec(500);
+ 				runDriveMotors(0,0);
+ 				runDriveMotors(-40,0);
+ 				wait1Msec(1000);
+ 				runDriveMotors(0,0);
+ 				motor[intakeMotor] = 127;
+ 				wait1Msec(500);
+ 				runDriveMotors(0,0);
+ 				runDriveMotors(70,70);
+ 				intakeAndShoot(127);
+ 				wait1Msec(1000);
+ 				runDriveMotors(0,0);
+ 				turnAllOff();
+
   	}
 //intake backwards
     if (vexRT[Btn6U] == 1) {
